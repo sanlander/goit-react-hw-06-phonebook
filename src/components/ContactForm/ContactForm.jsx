@@ -55,7 +55,7 @@ export const ContactForm = ({ onSubmitForm }) => {
             id="number"
             type="tel"
             name="number"
-            placeholder="+38 067 455 22 88"
+            placeholder="+38 067 122 22 88"
           />
           <br />
           <ErrorMessage component={Error} name="number" />
