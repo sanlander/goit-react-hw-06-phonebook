@@ -1,31 +1,41 @@
-import {
-  Item,
-  DeleteBtn,
-  ListItems,
-  ItemNumber,
-  InfoItems,
-} from './ContactsList.modules';
+import { Filter } from 'components';
+import { ContactsItem } from 'components/ContactsItem/ContactsItem';
+import { useSelector } from 'react-redux';
+import { getContacts, getTextOfFilter } from 'redux/selectors';
+import { Li, Ul } from './ContactsList.modules';
 
-export const ContactsList = ({ contacts, onClickDelete }) => {
+const getVisibleContacts = (contacts, textSearch) => {
+  return contacts.filter(({ name }) =>
+    name.toLowerCase().includes(textSearch.toLowerCase())
+  );
+};
+
+export const ContactsList = () => {
+  const contacts = useSelector(getContacts);
+  const textSearch = useSelector(getTextOfFilter);
+  const visibleContacts = getVisibleContacts(contacts, textSearch);
+
   let numberItems = 0;
   return (
     <div>
-      <ListItems>
-        {contacts.map(({ id, name, number }) => {
-          numberItems += 1;
-          return (
-            <Item key={id}>
-              <InfoItems>
-                <ItemNumber>{numberItems}</ItemNumber>
-                {name}, tel: {number}
-              </InfoItems>
-              <DeleteBtn type="button" onClick={() => onClickDelete(id)}>
-                Delete
-              </DeleteBtn>
-            </Item>
-          );
-        })}
-      </ListItems>
+      <h2>Contacts</h2>
+      {contacts.length > 0 && (
+        <div>
+          <Filter />
+
+          <Ul>
+            {visibleContacts.map(contact => {
+              numberItems += 1;
+
+              return (
+                <Li key={contact.id}>
+                  <ContactsItem contact={contact} numberItems={numberItems} />
+                </Li>
+              );
+            })}
+          </Ul>
+        </div>
+      )}
     </div>
   );
 };

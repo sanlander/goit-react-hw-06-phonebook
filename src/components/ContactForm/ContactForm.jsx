@@ -1,9 +1,11 @@
-import { nanoid } from 'nanoid';
 import { FormBox, Label, Input, Button, Error } from './ContactForm.modules';
-import { firstLetterToUppercase } from 'components';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import 'yup-phone';
+import { Notify } from 'notiflix';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContacts } from 'redux/contactsReducer';
 
 const schema = yup.object().shape({
   name: yup.string().min(2).required('Required field'),
@@ -15,15 +17,21 @@ const initialValues = {
   number: '',
 };
 
-export const ContactForm = ({ onSubmitForm }) => {
-  const handleFormSubmit = (values, actions) => {
-    const newContact = {
-      id: nanoid(5),
-      name: firstLetterToUppercase(values.name),
-      number: values.number,
-    };
+export const ContactForm = () => {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-    onSubmitForm(newContact);
+  const handleFormSubmit = (values, actions) => {
+    const submitName = values.name.toLowerCase();
+
+    if (contacts.find(({ name }) => submitName === name.toLowerCase())) {
+      Notify.warning(`${values.name} is already in contacts.`, {
+        position: 'center-top',
+      });
+      return;
+    }
+
+    dispatch(addContacts(values));
 
     actions.resetForm();
   };
