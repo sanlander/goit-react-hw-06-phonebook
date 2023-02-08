@@ -9,16 +9,17 @@ import { addContacts } from 'redux/contactsReducer';
 
 const schema = yup.object().shape({
   name: yup.string().min(2).required('Required field'),
-  number: yup.string().phone('UA', true, `Phone is invalid`),
+  phone: yup.string().phone('UA', true, `Phone is invalid`),
 });
 
 const initialValues = {
   name: '',
-  number: '',
+  phone: '',
 };
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  // const contacts = useSelector(getContacts);
+  const contacts = Object.values(useSelector(getContacts)).slice(0, -1);
   const dispatch = useDispatch();
 
   const handleFormSubmit = (values, actions) => {
@@ -62,7 +63,7 @@ export const ContactForm = () => {
           <Input
             id="number"
             type="tel"
-            name="number"
+            name="phone"
             placeholder="+38 067 122 22 88"
           />
           <br />

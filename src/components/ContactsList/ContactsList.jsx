@@ -5,37 +5,36 @@ import { getContacts, getTextOfFilter } from 'redux/selectors';
 import { Li, Ul } from './ContactsList.modules';
 
 const getVisibleContacts = (contacts, textSearch) => {
+  console.log(contacts);
   return contacts.filter(({ name }) =>
     name.toLowerCase().includes(textSearch.toLowerCase())
   );
 };
 
 export const ContactsList = () => {
-  const contacts = useSelector(getContacts);
+  // const contacts = useSelector(getContacts);
+  const contacts = Object.values(useSelector(getContacts)).slice(0, -1);
   const textSearch = useSelector(getTextOfFilter);
-  const visibleContacts = getVisibleContacts(contacts, textSearch);
+  if (contacts.length > 0) {
+    const visibleContacts = getVisibleContacts(contacts, textSearch);
 
-  let numberItems = 0;
-  return (
-    <div>
-      <h2>Contacts</h2>
-      {contacts.length > 0 && (
-        <div>
-          <Filter />
+    let numberItems = 0;
+    return (
+      <div>
+        <Filter />
 
-          <Ul>
-            {visibleContacts.map(contact => {
-              numberItems += 1;
+        <Ul>
+          {visibleContacts.map(contact => {
+            numberItems += 1;
 
-              return (
-                <Li key={contact.id}>
-                  <ContactsItem contact={contact} numberItems={numberItems} />
-                </Li>
-              );
-            })}
-          </Ul>
-        </div>
-      )}
-    </div>
-  );
+            return (
+              <Li key={contact.id}>
+                <ContactsItem contact={contact} numberItems={numberItems} />
+              </Li>
+            );
+          })}
+        </Ul>
+      </div>
+    );
+  }
 };
