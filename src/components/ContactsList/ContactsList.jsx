@@ -5,7 +5,7 @@ import { getContacts, getTextOfFilter } from 'redux/selectors';
 import { Li, Ul } from './ContactsList.modules';
 
 const getVisibleContacts = (contacts, textSearch) => {
-  console.log(contacts);
+  
   return contacts.filter(({ name }) =>
     name.toLowerCase().includes(textSearch.toLowerCase())
   );
