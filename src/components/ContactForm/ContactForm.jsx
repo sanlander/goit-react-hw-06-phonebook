@@ -18,8 +18,8 @@ const initialValues = {
 };
 
 export const ContactForm = () => {
-  // const contacts = useSelector(getContacts);
-  const contacts = Object.values(useSelector(getContacts)).slice(0, -1);
+  const contacts = useSelector(getContacts);
+  // const contacts = Object.values(useSelector(getContacts)).slice(0, -1);
   const dispatch = useDispatch();
 
   const handleFormSubmit = (values, actions) => {
@@ -57,17 +57,17 @@ export const ContactForm = () => {
           <ErrorMessage component={Error} name="name" />
         </Label>
         <br />
-        <Label htmlFor="number">
+        <Label htmlFor="phone">
           Enter your number
           <br />
           <Input
-            id="number"
+            id="phone"
             type="tel"
             name="phone"
             placeholder="+38 067 122 22 88"
           />
           <br />
-          <ErrorMessage component={Error} name="number" />
+          <ErrorMessage component={Error} name="phone" />
         </Label>
         <br />
         <Button type="submit">Add contact</Button>

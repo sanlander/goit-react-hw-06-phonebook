@@ -5,16 +5,15 @@ import { getContacts, getTextOfFilter } from 'redux/selectors';
 import { Li, Ul } from './ContactsList.modules';
 
 const getVisibleContacts = (contacts, textSearch) => {
-  
   return contacts.filter(({ name }) =>
     name.toLowerCase().includes(textSearch.toLowerCase())
   );
 };
 
 export const ContactsList = () => {
-  // const contacts = useSelector(getContacts);
-  const contacts = Object.values(useSelector(getContacts)).slice(0, -1);
+  const contacts = useSelector(getContacts);
   const textSearch = useSelector(getTextOfFilter);
+
   if (contacts.length > 0) {
     const visibleContacts = getVisibleContacts(contacts, textSearch);
 
